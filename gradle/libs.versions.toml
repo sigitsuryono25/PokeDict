@@ -1,0 +1,52 @@
+[versions]
+agp = "8.12.1"
+kotlin = "2.2.10"
+coreKtx = "1.17.0"
+junit = "4.13.2"
+junitVersion = "1.3.0"
+espressoCore = "3.7.0"
+appcompat = "1.7.1"
+material = "1.12.0"
+activity = "1.10.1"
+constraintlayout = "2.2.1"
+koinVersion = "4.1.0"
+timberVersion = "5.0.1"
+roomVersion = "2.7.2"
+coroutinesVersion = "1.10.2"
+multidexVersion = "2.0.1"
+
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koinVersion" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koinVersion" }
+androidx-room = { group = "androidx.room", name = "room-runtime", version.ref = "roomVersion" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomVersion" }
+androidx-room-ksp = { group = "androidx.room", name = "room-compiler", version.ref = "roomVersion" }
+androidx-room-rx = { group = "androidx.room", name = "room-rxjava2", version.ref = "roomVersion" }
+timber-android = { group = "com.jakewharton.timber", name = "timber", version.ref = "timberVersion" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutinesVersion" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutinesVersion" }
+multidex = { group = "androidx.multidex", name = "multidex", version.ref = "multidexVersion" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version = "3.0.0" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version = "5.1.0" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version = "4.16.0" }
+gson = { group = "com.google.code.gson", name = "gson", version = "2.13.1" }
+okhttplogging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version = "5.1.0" }
+gsonconverter = { group = "com.squareup.retrofit2", name = "converter-gson", version = "3.0.0" }
+stfalcon = { group = "com.github.stfalcon-studio", name = "StfalconImageViewer", version = "1.0.1"}
+
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+ksp = { id = "com.google.devtools.ksp", version = "2.2.10-2.0.2" }
+
