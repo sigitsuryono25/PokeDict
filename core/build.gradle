@@ -54,6 +54,8 @@ dependencies {
     implementation libs.androidx.room.ktx
     implementation libs.androidx.room.rx
     implementation libs.androidx.room
+    ksp libs.androidx.room.ksp
+
 
     //coroutines
     implementation libs.kotlinx.coroutines.core
@@ -69,5 +71,11 @@ dependencies {
     //retrofit and okhttp
     implementation libs.retrofit
     implementation libs.gson
+
+    //internet monitoring
+    implementation libs.reactivenetwork.rx2
+
+    //kotpre
+    implementation libs.kotpref
 
 }

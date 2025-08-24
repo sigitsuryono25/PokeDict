@@ -1,5 +1,6 @@
 [versions]
 agp = "8.12.1"
+coreSplashscreen = "1.0.1"
 kotlin = "2.2.10"
 coreKtx = "1.17.0"
 junit = "4.13.2"
@@ -10,6 +11,7 @@ material = "1.12.0"
 activity = "1.10.1"
 constraintlayout = "2.2.1"
 koinVersion = "4.1.0"
+reactivenetworkRx2 = "3.0.8"
 timberVersion = "5.0.1"
 roomVersion = "2.7.2"
 coroutinesVersion = "1.10.2"
@@ -18,6 +20,7 @@ multidexVersion = "2.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -31,6 +34,7 @@ androidx-room = { group = "androidx.room", name = "room-runtime", version.ref = 
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomVersion" }
 androidx-room-ksp = { group = "androidx.room", name = "room-compiler", version.ref = "roomVersion" }
 androidx-room-rx = { group = "androidx.room", name = "room-rxjava2", version.ref = "roomVersion" }
+reactivenetwork-rx2 = { module = "com.github.pwittchen:reactivenetwork-rx2", version.ref = "reactivenetworkRx2" }
 timber-android = { group = "com.jakewharton.timber", name = "timber", version.ref = "timberVersion" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutinesVersion" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutinesVersion" }
@@ -42,6 +46,7 @@ gson = { group = "com.google.code.gson", name = "gson", version = "2.13.1" }
 okhttplogging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version = "5.1.0" }
 gsonconverter = { group = "com.squareup.retrofit2", name = "converter-gson", version = "3.0.0" }
 stfalcon = { group = "com.github.stfalcon-studio", name = "StfalconImageViewer", version = "1.0.1"}
+kotpref = { group = "com.chibatching.kotpref", name = "kotpref", version = "2.13.2" }
 
 
 [plugins]

@@ -1,5 +1,6 @@
 <com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/appbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -7,7 +8,7 @@
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
+        android:layout_height="wrap_content"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"
         app:layout_scrollFlags="snap|enterAlways|scroll">
@@ -32,23 +33,71 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginHorizontal="16dp"
-                android:layout_toStartOf="@id/toolbarMenu"
                 android:layout_toEndOf="@id/btnAppBarBack"
                 android:gravity="center"
                 android:text="@string/app_name"
                 android:textColor="#292929" />
 
-            <ImageView
-                android:id="@+id/toolbarMenu"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_search"
-                app:tint="#292929" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/idSearchContainer"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@id/btnAppBarBack"
+                android:visibility="gone"
+                android:layout_marginTop="-4dp"
+                tools:visibility="visible">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/query"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
+
+
+    <LinearLayout
+        android:id="@+id/offlineBanner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFF8E1"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="16dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            style="@style/TextAppearance.Material3.BodyLarge"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:text="@string/kamu_sedang_offline"
+            android:textColor="#B85406"
+            android:textStyle="bold" />
+
+        <TextView
+            style="@style/TextAppearance.Material3.BodySmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Beberapa gambar mungkin tidak ditampilkan dengan benar."
+            android:textColor="#B85406" />
+
+        <TextView
+            android:id="@+id/lastSync"
+            style="@style/TextAppearance.Material3.BodySmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textColor="#B85406"
+            android:textStyle="bold"
+            tools:text="Terakhir disinkronkan 20 Augustus 2025" />
+
+    </LinearLayout>
 
     <View
         android:id="@+id/shadow"

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -15,6 +16,14 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas".toString())
+        }
+    }
+
+    packagingOptions {
+        resources.excludes.add("META-INF/rxjava.properties")
     }
 
     buildTypes {
@@ -68,4 +77,19 @@ dependencies {
 
     //imageviewer
     implementation libs.stfalcon
+
+    //room
+    implementation libs.androidx.room.ktx
+    implementation libs.androidx.room.rx
+    implementation libs.androidx.room
+    ksp libs.androidx.room.ksp
+
+    //internet monitoring
+    implementation libs.reactivenetwork.rx2
+
+    //kotpre
+    implementation libs.kotpref
+
+    //splashscreen
+    implementation libs.androidx.core.splashscreen
 }

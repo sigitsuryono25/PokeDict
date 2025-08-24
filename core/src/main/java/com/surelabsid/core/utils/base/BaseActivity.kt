@@ -6,8 +6,14 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
+
 
 abstract class BaseActivity : AppCompatActivity() {
+    private var internetDisposable: Disposable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,11 +82,34 @@ abstract class BaseActivity : AppCompatActivity() {
      */
     open fun initRecyclerView() {}
 
+    /**
+     * Connection monitoring. Use this function to initialize connection monitoring.
+     */
+    open fun connectionMonitoring(isAvailable: Boolean) {}
+
     protected fun setInsets(root: View) {
         ViewCompat.setOnApplyWindowInsetsListener(root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setupNetworkListener()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        internetDisposable?.dispose()
+    }
+
+    protected fun setupNetworkListener() {
+        internetDisposable = ReactiveNetwork
+            .observeInternetConnectivity()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ isConnectedToInternet -> connectionMonitoring(isConnectedToInternet) })
     }
 }

@@ -2,6 +2,7 @@ package com.surelabsid.core.data.source.network.response.pokelist
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.surelabsid.core.data.source.local.entity.PokemonEntity
 import com.surelabsid.core.data.source.network.model.PokemonItem
 import com.surelabsid.core.utils.helpers.getPokeId
 import kotlinx.parcelize.Parcelize
@@ -35,10 +36,28 @@ data class ResultsItem(
     fun toPokemonItem(): PokemonItem {
         val id = url?.getPokeId()
         return PokemonItem(
-            id = id.orEmpty().padStart(3, '0'),
+            id = id.orEmpty(),
+            pokeId = id.orEmpty().padStart(3, '0'),
             url = url.orEmpty(),
             name = name.orEmpty(),
             imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png"
+        )
+    }
+
+    fun toPokeEntity(): PokemonEntity {
+        val id = url?.getPokeId()
+        return PokemonEntity(
+            _id = id.toString().toInt(),
+            id = id.orEmpty(),
+            pokeId = id.orEmpty().padStart(3, '0'),
+            name = name.toString(),
+            types = "",
+            weight = 0F,
+            height = 0F,
+            abilities = "",
+            stats = "",
+            imageUrl = "",
+            cover = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png"
         )
     }
 }

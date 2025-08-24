@@ -1,60 +1,209 @@
 package com.surelabsid.pokeinfo.home.dialog
 
+import android.content.Context
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColorInt
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.surelabsid.core.data.source.network.model.PokeDetail
+import com.surelabsid.core.utils.base.BaseBottomSheetDialogFragment
 import com.surelabsid.pokeinfo.R
+import com.surelabsid.pokeinfo.databinding.BottomSheetPokemonDetailBinding
+import com.surelabsid.pokeinfo.databinding.ItemChipBinding
+import com.surelabsid.pokeinfo.home.adapter.AdapterCarousel
+import com.surelabsid.pokeinfo.home.adapter.AdapterStatistik
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val POKE_DETAIL = "POKE_DETAIL"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [BottomSheetPokemonDetail.newInstance] factory method to
- * create an instance of this fragment.
- */
-class BottomSheetPokemonDetail : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class BottomSheetPokemonDetail : BaseBottomSheetDialogFragment() {
+    private var _binding: BottomSheetPokemonDetailBinding? = null
+    private val binding get() = _binding!!
+    private var pokeDetailResponse: PokeDetail? = null
+    private var isBookmark: Boolean = false
+    private lateinit var carousel: AdapterCarousel
+    private lateinit var statistik: AdapterStatistik
+
+    companion object {
+        val TAG: String = BottomSheetPokemonDetail::class.java.simpleName
+
+        fun newInstance(pokeDetailResponse: PokeDetail?): BottomSheetPokemonDetail {
+            val args = Bundle()
+            args.putParcelable(POKE_DETAIL, pokeDetailResponse)
+            val fragment = BottomSheetPokemonDetail()
+            fragment.arguments = args
+            return fragment
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            pokeDetailResponse = it.getParcelable(POKE_DETAIL)
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.bottom_sheet_pokemon_detail, container, false)
+    override fun initView() {
+        super.initView()
+        binding.pokeId.text = "#${pokeDetailResponse?.pokeId?.padStart(3, '0')}"
+        binding.berat.text = pokeDetailResponse?.weight?.div(10.0).toString() + " kg"
+        binding.tinggi.text = pokeDetailResponse?.height?.div(10.0).toString() + " m"
+        binding.pokemonName.text =
+            pokeDetailResponse?.pokeName?.replaceFirstChar { it.uppercase() }.toString()
+        mappingAbilities()
+        mappingTypes()
+        setHeaderBackground(
+            binding.images,
+            pokeDetailResponse?.types ?: emptyList(),
+            requireContext()
+        )
+        setHeaderBackground(
+            binding.pokemonName,
+            pokeDetailResponse?.types ?: emptyList(),
+            requireContext()
+        )
+        setHeaderBackground(
+            binding.root,
+            pokeDetailResponse?.types ?: emptyList(),
+            requireContext()
+        )
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment BottomSheetPokemonDetail.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            BottomSheetPokemonDetail().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun setLayout(container: ViewGroup?): View {
+        _binding = BottomSheetPokemonDetailBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+    override fun initClick() {
+        super.initClick()
+        binding.close.setOnClickListener {
+            dismiss()
+        }
+        binding.bookmark.setOnClickListener {
+            if (!isBookmark) {
+                binding.bookmark.setImageResource(R.drawable.ic_fav_filled)
+                isBookmark = true
+            } else {
+                binding.bookmark.setImageResource(R.drawable.ic_fav)
+                isBookmark = false
             }
+        }
+    }
+
+    override fun initRecyclerView() {
+        super.initRecyclerView()
+        carousel = AdapterCarousel()
+        carousel.addData(pokeDetailResponse?.images)
+        binding.images.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.images.adapter = carousel
+        val snapHelper = androidx.recyclerview.widget.PagerSnapHelper()
+        snapHelper.attachToRecyclerView(binding.images)
+
+        statistik = AdapterStatistik()
+        statistik.addData(pokeDetailResponse?.statistics)
+        binding.statRv.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.statRv.adapter = statistik
+    }
+
+    private fun mappingTypes() {
+        pokeDetailResponse?.types?.forEach {
+            val chipBinding = ItemChipBinding.inflate(layoutInflater, null, false)
+            chipBinding.chip.text = it.toString()
+            chipBinding.chip.isClickable = false
+            binding.chipTypes.addView(chipBinding.root)
+        }
+    }
+
+    private fun mappingAbilities() {
+        pokeDetailResponse?.abilities?.forEach {
+            val chipBinding = ItemChipBinding.inflate(layoutInflater, null, false)
+            chipBinding.chip.text = it.toString()
+            chipBinding.chip.isClickable = false
+            binding.abilities.addView(chipBinding.root)
+        }
+    }
+
+    private fun setHeaderBackground(view: View, types: List<String?>, context: Context) {
+        val colors = when {
+            types.size >= 2 -> intArrayOf(
+                getTypeColor(context, types.get(0)),
+                getTypeColor(context, types.get(1))
+            )
+
+            types.isNotEmpty() -> intArrayOf(
+                getTypeColor(context, types.get(0)),
+                getTypeColor(context, types.get(0))
+            )
+
+            else -> intArrayOf(
+                ContextCompat.getColor(context, android.R.color.darker_gray),
+                ContextCompat.getColor(context, android.R.color.darker_gray)
+            )
+        }
+
+        val gradient = GradientDrawable(
+            GradientDrawable.Orientation.LEFT_RIGHT,
+            colors
+        )
+        view.background = gradient
+
+        // Cek luminance warna rata-rata
+        val avgColor = androidx.core.graphics.ColorUtils.blendARGB(colors[0], colors[1], 0.5f)
+        val luminance = androidx.core.graphics.ColorUtils.calculateLuminance(avgColor)
+
+        // Atur font color berdasarkan kecerahan
+        if (view is android.widget.TextView) {
+            if (luminance < 0.5) {
+                view.setTextColor(ContextCompat.getColor(context, android.R.color.white))
+            } else {
+                view.setTextColor(ContextCompat.getColor(context, android.R.color.black))
+            }
+        }
+    }
+
+    fun getTypeColor(context: Context, type: String?): Int {
+        return when (type.toString().lowercase()) {
+            "normal" -> "#A8A77A".toColorInt()
+            "fire" -> "#EE8130".toColorInt()
+            "water" -> "#6390F0".toColorInt()
+            "electric" -> "#F7D02C".toColorInt()
+            "grass" -> "#7AC74C".toColorInt()
+            "ice" -> "#96D9D6".toColorInt()
+            "fighting" -> "#C22E28".toColorInt()
+            "poison" -> "#A33EA1".toColorInt()
+            "ground" -> "#E2BF65".toColorInt()
+            "flying" -> "#A98FF3".toColorInt()
+            "psychic" -> "#F95587".toColorInt()
+            "bug" -> "#A6B91A".toColorInt()
+            "rock" -> "#B6A136".toColorInt()
+            "ghost" -> "#735797".toColorInt()
+            "dragon" -> "#6F35FC".toColorInt()
+            "dark" -> "#705746".toColorInt()
+            "steel" -> "#B7B7CE".toColorInt()
+            "fairy" -> "#D685AD".toColorInt()
+            else -> ContextCompat.getColor(context, android.R.color.darker_gray)
+        }
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        val dialog = dialog ?: return
+        val bottomSheet =
+            dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+        bottomSheet?.layoutParams?.height = ViewGroup.LayoutParams.MATCH_PARENT
+        val behavior =
+            com.google.android.material.bottomsheet.BottomSheetBehavior.from(bottomSheet as View)
+        behavior.state = com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
+        behavior.isDraggable = false
     }
 }

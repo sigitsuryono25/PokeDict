@@ -2,4 +2,6 @@
     <string name="app_name">PokeInfo</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="bagikan">Bagikan</string>
+    <string name="kamu_sedang_offline">Kamu sedang Offline.</string>
 </resources>

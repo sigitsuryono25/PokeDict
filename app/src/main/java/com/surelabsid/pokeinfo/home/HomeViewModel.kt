@@ -3,16 +3,18 @@ package com.surelabsid.pokeinfo.home
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.surelabsid.core.data.common.Resources
+import com.surelabsid.core.data.source.local.entity.PokemonEntity
+import com.surelabsid.core.data.source.network.model.PokeDetail
 import com.surelabsid.core.data.source.network.model.PokemonItem
-import com.surelabsid.core.data.source.network.response.pokedetail.PokeDetailResponse
 import com.surelabsid.core.domain.usecase.PokeUseCase
 import com.surelabsid.core.utils.base.BaseViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class HomeViewModel(private val useCase: PokeUseCase) : BaseViewModel() {
-    private var _pokeList = MutableLiveData<List<PokemonItem?>?>()
+    private var _pokeList = MutableLiveData<MutableList<PokemonEntity?>>()
     val pokeList get() = _pokeList
-    private var _pokeDetail = MutableLiveData<PokeDetailResponse?>()
+    private var _pokeDetail = MutableLiveData<PokeDetail?>()
     val pokeDetail get() = _pokeDetail
 
     fun getPokeList(offset: Int, limit: Int) {
@@ -21,7 +23,7 @@ class HomeViewModel(private val useCase: PokeUseCase) : BaseViewModel() {
                 when (data) {
                     is Resources.Loading -> {}
                     is Resources.Success -> {
-                        _pokeList.postValue(data.data)
+                        _pokeList.postValue(data.data?.toMutableList())
                     }
 
                     is Resources.Error -> {
@@ -42,6 +44,7 @@ class HomeViewModel(private val useCase: PokeUseCase) : BaseViewModel() {
                     }
 
                     is Resources.Error -> {
+                        Timber.e("error ${data.message}")
                         _error.postValue(data.message)
                     }
                 }
