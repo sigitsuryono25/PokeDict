@@ -9,13 +9,13 @@ Selain itu ada dapat memfavotikan pokemon pilihan anda, lakukan pencarian hingga
 - KOIN
 - Glide
 - Retrofit, GSON dan OkHttp
-- Roomdatabase
+- Room Database
 - Kotlin Preferences (Kotpref)
 - Timber
 - Reactive Network Monitoring
 
 ## Screenshots
-![screenshot 1](https://raw.githubusercontent.com/sigitsuryono25/PokemonInfo/63998069cf47248db2e62584d67afb177f136224/screenshots/Screenshot_1756098122.png?token=GHSAT0AAAAAADFU35PWEUDNXZ4X54YOPXD62FL543Q)
-![screenshot 2](https://raw.githubusercontent.com/sigitsuryono25/PokemonInfo/63998069cf47248db2e62584d67afb177f136224/screenshots/Screenshot_1756098132.png?token=GHSAT0AAAAAADFU35PWSGGOVAAR2ZUMJK4G2FL55ZQ)
+[Demo Aplikasi](https://github.com/sigitsuryono25/PokemonInfo/blob/master/screenshots/Screen_recording_20250825_133903.mp4)
+
 ## Credits
 - [Poke API](https://pokeapi.co/)
