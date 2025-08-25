@@ -2,6 +2,13 @@
 Aplikasi yang mengimplementasikan Pokemon API. Aplikasi ini berisi daftar Pokemon yang diketahui hingga sekarang serta infomasi detail seperti tingi, berat, tipe dan informasi lainnya. 
 Selain itu ada pilihan untuk memfavotikan pokemon, melakukan pencarian hingga membagikan informasi pokemon kepada teman.
 
+## Cara Running Project
+Kelengkapan yang harus diinstal
+- Android Studio Narwhal Feature Drop 2025.1.2 patch 1
+- AGP 8.12.1
+- Android SDK 36
+- Virtual Device (opsional) atau Real Device
+
 ## Tech Stack
 - AGP 8.12.1
 - Min SDK API 24
