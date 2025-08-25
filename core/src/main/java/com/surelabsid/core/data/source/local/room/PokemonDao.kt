@@ -24,6 +24,15 @@ interface PokemonDao {
     @Query("SELECT * FROM pokemon WHERE id = :id")
     suspend fun findOnePokemonById(id: Int): PokemonEntity?
 
+    @Query("SELECT * FROM pokemon_favorites WHERE id = :id")
+    suspend fun findOnePokemonFav(id: Int): PokemonFavEntity?
+
+    @Query("SELECT pokemon.* FROM pokemon_favorites INNER JOIN pokemon ON pokemon.id = pokemon_favorites.id")
+    suspend fun findAllPokemonFavorite(): List<PokemonEntity>
+
+    @Query("DELETE FROM pokemon_favorites WHERE id = :id")
+    suspend fun removeFromFavorite(id: Int)
+
     @Query("UPDATE pokemon SET height = :height, weight = :weight, imageUrl = :imageUrl, abilities = :abilities, stats = :stats, types = :types WHERE id = :id")
     suspend fun updatePokemonById(
         id: Int,

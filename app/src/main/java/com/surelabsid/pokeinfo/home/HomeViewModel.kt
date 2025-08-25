@@ -4,10 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.surelabsid.core.data.common.Resources
 import com.surelabsid.core.data.source.local.entity.PokemonEntity
+import com.surelabsid.core.data.source.network.model.GeneralMessage
 import com.surelabsid.core.data.source.network.model.PokeDetail
-import com.surelabsid.core.data.source.network.model.PokemonItem
 import com.surelabsid.core.domain.usecase.PokeUseCase
 import com.surelabsid.core.utils.base.BaseViewModel
+import com.surelabsid.core.utils.helpers.SingleLiveEvent
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -16,6 +17,10 @@ class HomeViewModel(private val useCase: PokeUseCase) : BaseViewModel() {
     val pokeList get() = _pokeList
     private var _pokeDetail = MutableLiveData<PokeDetail?>()
     val pokeDetail get() = _pokeDetail
+    private var _favStatus = SingleLiveEvent<GeneralMessage>()
+    val favStatus get() = _favStatus
+    private var _isFavorite = SingleLiveEvent<Boolean>()
+    val isFavorite get() = _isFavorite
 
     fun getPokeList(offset: Int, limit: Int) {
         viewModelScope.launch {
@@ -47,6 +52,38 @@ class HomeViewModel(private val useCase: PokeUseCase) : BaseViewModel() {
                         Timber.e("error ${data.message}")
                         _error.postValue(data.message)
                     }
+                }
+            }
+        }
+    }
+
+    fun setToFavorite(id: String) {
+        viewModelScope.launch {
+            useCase.setToFavorite(id).collect { data ->
+                when (data) {
+                    is Resources.Loading -> {}
+                    is Resources.Success -> {
+                        favStatus.postValue(data.data)
+                    }
+
+                    is Resources.Error -> {
+                        _error.postValue(data.message)
+                    }
+                }
+            }
+        }
+    }
+
+    fun checkFavorite(id: String) {
+        viewModelScope.launch {
+            useCase.checkIsFavorite(id).collect { data ->
+                when (data) {
+                    is Resources.Loading -> {}
+                    is Resources.Success -> {
+                        _isFavorite.postValue(data.data ?: false)
+                    }
+
+                    is Resources.Error -> _error.postValue(data.message)
                 }
             }
         }

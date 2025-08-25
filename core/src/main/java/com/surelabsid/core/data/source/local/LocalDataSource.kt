@@ -4,7 +4,9 @@ import android.app.Application
 import com.surelabsid.core.data.common.CommonPrefs
 import com.surelabsid.core.data.common.Resources
 import com.surelabsid.core.data.source.local.entity.PokemonEntity
+import com.surelabsid.core.data.source.local.entity.PokemonFavEntity
 import com.surelabsid.core.data.source.local.room.PokemonDao
+import com.surelabsid.core.data.source.network.model.GeneralMessage
 import com.surelabsid.core.data.source.network.model.PokeDetail
 import com.surelabsid.core.data.source.network.services.PokeService
 import com.surelabsid.core.domain.usecase.PokeUseCase
@@ -29,16 +31,21 @@ class LocalDataSource(
         return flow {
             emit(Resources.Loading())
             try {
-                val remote = service.getPokeList(offset, limit)
-                remote.results?.let {
-                    val entity = remote.results.map {
+                val remote = if (NetworkHelper.isNetworkAvailable(application)) {
+                    val entity = service.getPokeList(offset, limit).results?.map {
                         it?.toPokeEntity() ?: PokemonEntity()
-                    }
+                    } ?: emptyList()
+                    //insert to database
                     pokeDao.insertPokemon(entity)
-                }
-                CommonPrefs.lastSync = Date().toString()
-                val findAll = pokeDao.findAllPokemon(offset, limit)
-                emit(Resources.Success(findAll))
+
+                    //update to last sync
+                    CommonPrefs.lastSync = Date().toString()
+
+                    //return poke entity
+                    entity
+                } else pokeDao.findAllPokemon(offset, limit)
+
+                emit(Resources.Success(remote))
             } catch (e: Exception) {
                 e.printStackTrace()
                 val findAll = pokeDao.findAllPokemon(offset, limit)
@@ -64,6 +71,66 @@ class LocalDataSource(
                 e.printStackTrace()
                 val detailPokemon = pokeDao.findOnePokemonById(id.toInt())
                 emit(Resources.Success(detailPokemon?.toPokemonDetail()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    override fun getPokemonFavorite(): Flow<Resources<List<PokemonEntity>>> {
+        return flow {
+            emit(Resources.Loading())
+            try {
+                val findAll = pokeDao.findAllPokemonFavorite()
+                emit(Resources.Success(findAll))
+            } catch (e: Exception) {
+                e.printStackTrace()
+                emit(Resources.Error(e.message.toString()))
+            }
+        }
+    }
+
+    override fun setToFavorite(id: String): Flow<Resources<GeneralMessage>> {
+        return flow {
+            emit(Resources.Loading())
+            try {
+                val findOneEntity = pokeDao.findOnePokemonFav(id.toInt())
+                if (findOneEntity == null) {
+                    val favEntity = PokemonFavEntity(id.toInt())
+                    pokeDao.insertPokemonToFav(favEntity)
+                    emit(
+                        Resources.Success(
+                            GeneralMessage(
+                                "Berhasil menambahkan ke favorit.",
+                                true
+                            )
+                        )
+                    )
+                } else {
+                    pokeDao.removeFromFavorite(id.toInt())
+                    emit(
+                        Resources.Success(
+                            GeneralMessage(
+                                "Berhasil menghapus dari favorit.",
+                                false
+                            )
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                emit(Resources.Error(e.message.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    override fun checkIsFavorite(id: String): Flow<Resources<Boolean>> {
+        return flow {
+            emit(Resources.Loading())
+            try {
+                val favEntity = pokeDao.findOnePokemonFav(id.toInt())
+                emit(Resources.Success(favEntity != null))
+            } catch (e: Exception) {
+                e.printStackTrace()
+                emit(Resources.Error(e.message.toString()))
             }
         }.flowOn(Dispatchers.IO)
     }

@@ -18,9 +18,9 @@
         android:contentDescription="@string/app_name" />
 
     <RelativeLayout
-        android:layout_below="@id/dragIcon"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/dragIcon"
         android:background="@color/white">
 
         <androidx.core.widget.NestedScrollView
@@ -120,16 +120,20 @@
                             android:layout_marginTop="16dp"
                             android:text="Tipe" />
 
-                        <HorizontalScrollView
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/noTypes"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp">
+                            android:layout_marginTop="8dp"
+                            android:text="@string/belum_ada_data_tipe"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
 
-                            <com.google.android.material.chip.ChipGroup
-                                android:id="@+id/chipTypes"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-                        </HorizontalScrollView>
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/chipTypes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
                     </LinearLayout>
 
 
@@ -154,6 +158,14 @@
                         android:layout_marginTop="8dp" />
 
                     <TextView
+                        android:id="@+id/noAbilities"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/belum_ada_data_kemampuan"
+                        android:visibility="gone" />
+
+                    <TextView
                         style="@style/TextAppearance.Material3.TitleSmall"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -173,8 +185,17 @@
                         android:layout_marginTop="8dp"
                         android:orientation="vertical">
 
+                        <TextView
+                            android:id="@+id/noStat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/belum_ada_info_statistik"
+                            android:visibility="gone" />
+
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/statRv"
+                            android:nestedScrollingEnabled="false"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             tools:itemCount="3"
@@ -209,8 +230,20 @@
                 style="@style/Widget.Material3.Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/help"
+                android:text="@string/tutup" />
+
+            <ImageView
+                android:id="@+id/help"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/close"
+                android:layout_alignBottom="@id/close"
+                android:layout_centerVertical="true"
                 android:layout_toStartOf="@id/share"
-                android:text="Tutup" />
+                android:contentDescription="@string/app_name"
+                android:paddingHorizontal="12dp"
+                android:src="@drawable/ic_help" />
 
             <ImageView
                 android:id="@+id/share"
@@ -233,7 +266,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:contentDescription="@string/app_name"
-                android:paddingHorizontal="8dp"
+                android:paddingHorizontal="12dp"
                 android:src="@drawable/ic_fav"
                 tools:src="@drawable/ic_fav_filled" />
         </RelativeLayout>

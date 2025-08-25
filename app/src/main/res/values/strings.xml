@@ -1,7 +1,16 @@
 <resources>
-    <string name="app_name">PokeInfo</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="app_name">Poke Dict</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="bagikan">Bagikan</string>
     <string name="kamu_sedang_offline">Kamu sedang Offline.</string>
+    <string name="poke_id">#%1$s</string>
+    <string name="weight_kg">%1$s kg</string>
+    <string name="height_m">%1$s m</string>
+    <string name="belum_ada_data_kemampuan">Belum ada data kemampuan.</string>
+    <string name="belum_ada_info_statistik">Belum ada info statistik.</string>
+    <string name="belum_ada_data_tipe">Belum ada data tipe.</string>
+    <string name="tutup">Tutup</string>
+    <string name="bantuan">Bantuan</string>
+    <string name="mungkin_akan_ada_beberapa_data_yang_tidak_ditampikan_ketika_posisi_device_offline_data_yang_ditampikan_dihalaman_detail_hanya_untuk_pokemon_yang_telah_dilihat_secara_online_sebelumnya">Mungkin akan ada beberapa data yang tidak ditampikan ketika posisi device offline. Data yang ditampikan dihalaman detail hanya untuk pokemon yang telah dilihat secara online sebelumnya.</string>
+    <string name="tentang_aplikasi_pokemon"><b>Poke Dict</b> adalah aplikasi sederhana untuk menampilkan informasi Pokémon. Data diambil dari server resmi dan sebagian disimpan lokal agar dapat dibuka secara offline.</string>
 </resources>

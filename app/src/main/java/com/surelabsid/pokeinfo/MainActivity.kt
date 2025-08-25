@@ -22,6 +22,7 @@ class MainActivity : BaseActivity() {
 
     override fun initView() {
         super.initView()
+        setInsets(binding.root)
         binding.versionApp.text = "v${BuildConfig.VERSION_NAME}"
         Glide.with(this)
             .load(R.drawable.pokemon_logo)

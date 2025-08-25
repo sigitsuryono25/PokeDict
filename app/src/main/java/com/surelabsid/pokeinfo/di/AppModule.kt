@@ -10,6 +10,7 @@ import com.surelabsid.core.data.source.network.services.PokeService
 import com.surelabsid.core.domain.usecase.PokeInteractor
 import com.surelabsid.core.domain.usecase.PokeUseCase
 import com.surelabsid.core.utils.helpers.CacheInterceptor
+import com.surelabsid.pokeinfo.favorite.FavoriteViewModel
 import com.surelabsid.pokeinfo.home.HomeViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -59,6 +60,7 @@ var networkModules = module {
 
 val viewModelModules = module {
     viewModel { HomeViewModel(get()) }
+    viewModel { FavoriteViewModel(get()) }
 }
 
 val useCaseModules = module {

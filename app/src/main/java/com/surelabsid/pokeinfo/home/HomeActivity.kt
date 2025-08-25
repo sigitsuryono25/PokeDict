@@ -1,5 +1,7 @@
 package com.surelabsid.pokeinfo.home
 
+import android.content.Intent
+import android.view.Gravity
 import android.view.View
 import androidx.activity.addCallback
 import androidx.core.view.isVisible
@@ -12,9 +14,12 @@ import com.surelabsid.core.utils.base.BaseActivity
 import com.surelabsid.core.utils.helpers.hideView
 import com.surelabsid.core.utils.helpers.showKeyboard
 import com.surelabsid.core.utils.helpers.showView
+import com.surelabsid.pokeinfo.R
 import com.surelabsid.pokeinfo.databinding.ActivityHomeBinding
+import com.surelabsid.pokeinfo.favorite.FavoriteActivity
 import com.surelabsid.pokeinfo.home.adapter.AdapterPokeList
 import com.surelabsid.pokeinfo.home.dialog.BottomSheetPokemonDetail
+import com.surelabsid.pokeinfo.home.dialog.BottomSheetTentangApp
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeActivity : BaseActivity() {
@@ -30,7 +35,17 @@ class HomeActivity : BaseActivity() {
 
     override fun initAppBar() {
         super.initAppBar()
-        binding.appBarLayout.smallTitle.text = "Pokemon Glossarium"
+        binding.appBarLayout.smallTitle.text = "Poke Dict"
+        binding.appBarLayout.smallTitle.gravity = Gravity.START
+        binding.appBarLayout.btnMore.setImageResource(R.drawable.ic_fav)
+        binding.appBarLayout.btnMore.showView()
+        binding.appBarLayout.btnAppBarBack.hideView()
+        binding.appBarLayout.btnMore.setOnClickListener {
+            startActivity(Intent(this, FavoriteActivity::class.java))
+        }
+        binding.appBarLayout.btnMore2.setOnClickListener {
+            showTentangApp()
+        }
     }
 
     override fun initView() {
@@ -146,5 +161,10 @@ class HomeActivity : BaseActivity() {
     private fun showPokeDetail(pokeDetailResponse: PokeDetail?) {
         val pokeDetail = BottomSheetPokemonDetail.newInstance(pokeDetailResponse)
         pokeDetail.show(supportFragmentManager, BottomSheetPokemonDetail.TAG)
+    }
+
+    private fun showTentangApp() {
+        val tentangApp = BottomSheetTentangApp()
+        tentangApp.show(supportFragmentManager, BottomSheetTentangApp.TAG)
     }
 }
