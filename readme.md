@@ -1,6 +1,6 @@
 # Poke Dict
 Aplikasi yang mengimplementasikan Pokemon API. Aplikasi ini berisi daftar Pokemon yang diketahui hingga sekarang serta infomasi detail seperti tingi, berat, tipe dan informasi lainnya. 
-Selain itu ada dapat memfavotikan pokemon pilihan anda, lakukan pencarian hingga membagikan informasi pokemon kepada teman anda.
+Selain itu ada pilihan untuk memfavotikan pokemon, melakukan pencarian hingga membagikan informasi pokemon kepada teman.
 
 ## Tech Stack
 - AGP 8.12.1
